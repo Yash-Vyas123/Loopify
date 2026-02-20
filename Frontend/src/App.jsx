@@ -35,7 +35,7 @@ const App = () => {
   if (isLoading) return <PageLoader />;
 
   return (
-    <div className="h-screen" data-theme={theme}>
+    <div className="min-h-[100dvh]" data-theme={theme}>
 
       <Routes>
         <Route path="/" element={authUser ? (authUser.isOnboarded ? <Layout showSidebar><HomePage /></Layout> : <Navigate to="/onboarding" />) : <Navigate to="/login" />} />

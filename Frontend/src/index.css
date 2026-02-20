@@ -7,17 +7,36 @@
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
-  h1, h2, h3, h4, .font-outfit {
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-outfit {
     font-family: 'Outfit', sans-serif;
   }
 
   body {
     @apply transition-colors duration-300;
+    /* Prevent content from going under mobile browser UI */
+    min-height: 100dvh;
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  html,
+  body {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
+  }
+
+  @media (min-width: 1024px) {
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
   }
 
   ::-webkit-scrollbar-track {
@@ -25,7 +44,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
+    @apply bg-primary/20 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/40;
   }
 }
 
@@ -33,12 +56,60 @@
   .glass {
     @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl;
   }
-  
+
   .text-glow {
     text-shadow: 0 0 10px rgba(var(--p), 0.5);
+  }
+
+  /* Safe area insets for devices with notches/home indicators */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* ═══════════════════════════════════════
+   STREAM CHAT - Mobile Responsive Styles
+═══════════════════════════════════════ */
+
+/* Make the stream chat list scrollable properly on iOS */
+.str-chat__list {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix message input for very small screens */
+@media (max-width: 640px) {
+  .str-chat__message-input-inner {
+    padding: 4px 8px !important;
+  }
+
+  .str-chat__send-button {
+    padding: 6px !important;
+  }
+}
+
+/* Stream Video - full screen on mobile */
+.str-video {
+  height: 100dvh !important;
+}
+
+/* ═══════════════════════════════════════
+   MOBILE-SPECIFIC IMPROVEMENTS  
+═══════════════════════════════════════ */
+
+/* Improve touch targets */
+@media (max-width: 1023px) {
+  .btn {
+    min-height: 44px;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+    /* Prevents iOS auto-zoom on focus */
+  }
 }

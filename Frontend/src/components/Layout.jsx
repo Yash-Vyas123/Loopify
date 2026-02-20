@@ -15,7 +15,7 @@ const Layout = ({ children, showSidebar = false, showNavbar = true }) => {
             {children}
           </main>
 
-          {showSidebar && <MobileNav />}
+          <MobileNav />
         </div>
       </div>
     </div>

@@ -113,7 +113,7 @@ const ChatPage = () => {
   )?.user;
 
   return (
-    <div className="h-screen flex flex-col bg-base-100 overflow-hidden">
+    <div className="h-[100dvh] flex flex-col bg-base-100 overflow-hidden">
       <style>{`
         .str-chat {
           --str-chat__primary-color: #8b5cf6;
@@ -137,7 +137,12 @@ const ChatPage = () => {
           background-color: #1d232a !important;
           border-radius: 24px !important;
           border: 1px solid rgba(255,255,255,0.1) !important;
-          margin: 10px 20px 20px 20px !important;
+          margin: 8px 12px 12px 12px !important;
+        }
+        @media (min-width: 640px) {
+          .str-chat__message-input {
+            margin: 10px 20px 20px 20px !important;
+          }
         }
         .str-chat__message-simple {
            font-family: 'Inter', sans-serif !important;

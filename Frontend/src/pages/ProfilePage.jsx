@@ -69,9 +69,9 @@ const ProfilePage = () => {
         <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
             <div className="card bg-base-200/50 backdrop-blur-xl border border-base-300 shadow-xl overflow-hidden">
                 {/* Profile Header Decoration */}
-                <div className="h-32 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30" />
+                <div className="h-24 sm:h-32 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30" />
 
-                <div className="card-body p-6 sm:p-10 -mt-16">
+                <div className="card-body p-4 sm:p-6 lg:p-10 -mt-12 sm:-mt-16">
                     <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
                         {/* Profile Pic */}
                         <div className="relative group">
