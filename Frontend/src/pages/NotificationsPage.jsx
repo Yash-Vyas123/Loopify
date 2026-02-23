@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router";
 import { acceptFriendRequest, getFriendRequests } from "../lib/api";
 import { BellIcon, ClockIcon, MessageSquareIcon, UserCheckIcon, CheckCircle2Icon, XCircleIcon } from "lucide-react";
 import NoNotificationsFound from "../components/NoNotificationsFound";
