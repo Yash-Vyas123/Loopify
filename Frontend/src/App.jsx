@@ -10,6 +10,7 @@ import OnboardingPage from './pages/OnboardingPage.jsx';
 import FriendsPage from './pages/FriendsPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 
+
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 

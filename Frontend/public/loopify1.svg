@@ -1,0 +1,24 @@
+<svg width="44" height="44" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="110" fill="#4f46e5"></circle>
+
+  <!-- Chat Bubble -->
+  <path d="M70 90
+           h116
+           a20 20 0 0 1 20 20
+           v36
+           a20 20 0 0 1 -20 20
+           h-60
+           l-28 24
+           v-24
+           h-28
+           a20 20 0 0 1 -20 -20
+           v-36
+           a20 20 0 0 1 20 -20z" fill="white"></path>
+
+  <!-- Camera Icon -->
+  <rect x="120" y="115" width="46" height="32" rx="8" fill="#4f46e5"></rect>
+  <polygon points="166,122 196,108 196,154 166,140" fill="#4f46e5"></polygon>
+
+</svg>
