@@ -7,12 +7,12 @@ export async function getRecommendedUsers(req, res) {
     const currentUser = req.user;
 
     const recommendedUsers = await User.find({
-      $and:[
-        {_id: { $ne: currentUserId }},
-        {_id: { $nin: currentUser.friends}},
-        { isOnboarded: true},
+      $and: [
+        { _id: { $ne: currentUserId } },
+        { _id: { $nin: currentUser.friends } },
+        { isOnboarded: true },
       ],
-      
+
     });
     res.status(200).json(recommendedUsers);
   } catch (error) {
@@ -94,7 +94,7 @@ export async function acceptFriendRequest(req, res) {
 
     friendRequest.status = "accepted";
     await friendRequest.save();
-    
+
     await User.findByIdAndUpdate(friendRequest.sender, {
       $addToSet: { friends: friendRequest.recipient },
     });
@@ -140,6 +140,20 @@ export async function getOutgoingFriendReqs(req, res) {
     res.status(200).json(outgoingRequests);
   } catch (error) {
     console.log("Error in getOutgoingFriendReqs controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+export async function getUserProfile(req, res) {
+  try {
+    const { id: userId } = req.params;
+    const user = await User.findById(userId).select("-password -email");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error in getUserProfile controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }

@@ -8,11 +8,13 @@ const FriendCard = ({ friend }) => {
       <div className="card-body p-5">
         {/* USER INFO */}
         <div className="flex items-center gap-4 mb-4">
-          <div className="avatar size-14 ring ring-primary/20 ring-offset-base-100 ring-offset-2 rounded-full overflow-hidden transition-transform group-hover:scale-105">
+          <Link to={`/profile/${friend._id}`} className="avatar size-14 ring ring-primary/20 ring-offset-base-100 ring-offset-2 rounded-full overflow-hidden transition-transform hover:scale-105">
             <img src={friend.profilePic} alt={friend.fullName} className="object-cover" />
-          </div>
+          </Link>
           <div className="min-w-0">
-            <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors">{friend.fullName}</h3>
+            <Link to={`/profile/${friend._id}`}>
+              <h3 className="font-bold text-lg truncate hover:text-primary transition-colors">{friend.fullName}</h3>
+            </Link>
             <p className="text-xs opacity-60 flex items-center gap-1">
               <span className="size-2 rounded-full bg-success animate-pulse" />
               Online

@@ -78,14 +78,16 @@ const NotificationsPage = () => {
                     className="group relative bg-base-200/50 backdrop-blur-sm border border-base-300 rounded-3xl p-5 transition-all hover:bg-base-200 hover:shadow-xl hover:shadow-primary/5 border-l-4 border-l-primary"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="avatar online">
+                      <Link to={`/profile/${request?.sender?._id}`} className="avatar online hover:scale-105 transition-transform">
                         <div className="w-14 h-14 rounded-2xl ring-2 ring-primary/20 ring-offset-2 ring-offset-base-100 overflow-hidden">
                           <img src={request?.sender?.profilePic} alt={request?.sender?.fullName} />
                         </div>
-                      </div>
+                      </Link>
 
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-lg truncate group-hover:text-primary transition-colors">{request?.sender?.fullName}</h3>
+                        <Link to={`/profile/${request?.sender?._id}`}>
+                          <h3 className="font-bold text-lg truncate hover:text-primary transition-colors">{request?.sender?.fullName}</h3>
+                        </Link>
                         <div className="flex flex-wrap gap-1.5 mt-2">
                           <span className="badge badge-sm bg-primary/10 text-primary border-none font-bold py-2.5">
                             {capitalize(request?.sender?.nativeLanguage || "N/A")}
@@ -126,18 +128,20 @@ const NotificationsPage = () => {
               <div className="space-y-3">
                 {acceptedRequests.map((notification) => (
                   <div key={notification?._id} className="bg-base-200/30 border border-base-300 rounded-2xl p-4 flex items-center gap-4 group hover:bg-base-200/50 transition-colors">
-                    <div className="avatar size-12">
+                    <Link to={`/profile/${notification?.recipient?._id}`} className="avatar size-12 hover:scale-105 transition-transform">
                       <div className="rounded-xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
                         <img
                           src={notification?.recipient?.profilePic}
                           alt={notification?.recipient?.fullName}
                         />
                       </div>
-                    </div>
+                    </Link>
 
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium leading-relaxed">
-                        <span className="font-black text-primary">{notification?.recipient?.fullName}</span> is now a learner in your circle!
+                        <Link to={`/profile/${notification?.recipient?._id}`} className="font-black text-primary hover:underline">
+                          {notification?.recipient?.fullName}
+                        </Link> is now a learner in your circle!
                       </p>
                       <div className="flex items-center gap-4 mt-1">
                         <span className="text-[10px] uppercase font-bold tracking-widest opacity-40 flex items-center gap-1">

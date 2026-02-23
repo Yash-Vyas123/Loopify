@@ -59,3 +59,8 @@ export const getStreamToken = async () => {
     const response = await axiosInstance.get("/chat/token");
     return response.data;
 };
+
+export const getUserProfile = async (userId) => {
+    const response = await axiosInstance.get(`/users/profile/${userId}`);
+    return response.data;
+};

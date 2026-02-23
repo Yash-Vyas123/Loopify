@@ -82,12 +82,14 @@ const HomePage = () => {
                   >
                     <div className="card-body p-6 space-y-4">
                       <div className="flex items-center gap-4">
-                        <div className="avatar size-16 ring ring-primary/20 ring-offset-2 ring-offset-base-100 rounded-full overflow-hidden transition-transform group-hover:scale-105">
+                        <Link to={`/profile/${user._id}`} className="avatar size-16 ring ring-primary/20 ring-offset-2 ring-offset-base-100 rounded-full overflow-hidden transition-transform hover:scale-105">
                           <img src={user.profilePic} alt={user.fullName} className="object-cover" />
-                        </div>
+                        </Link>
 
                         <div className="min-w-0">
-                          <h3 className="font-bold text-xl truncate group-hover:text-primary transition-colors">{user.fullName}</h3>
+                          <Link to={`/profile/${user._id}`}>
+                            <h3 className="font-bold text-xl truncate hover:text-primary transition-colors">{user.fullName}</h3>
+                          </Link>
                           {user.location && (
                             <div className="flex items-center text-xs opacity-60 mt-1">
                               <MapPinIcon className="size-3 mr-1" />

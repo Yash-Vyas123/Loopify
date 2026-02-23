@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import useAuthUser from "../hooks/useAuthUser";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { completeOnboarding } from "../lib/api";
-import { CameraIcon, LoaderIcon, MapPinIcon, ShuffleIcon, UserIcon, GlobeIcon, BookOpenIcon, SaveIcon } from "lucide-react";
+import { completeOnboarding, getUserProfile } from "../lib/api";
+import { CameraIcon, LoaderIcon, MapPinIcon, ShuffleIcon, UserIcon, GlobeIcon, BookOpenIcon, SaveIcon, MessageSquareIcon, PhoneIcon } from "lucide-react";
 import { LANGUAGES } from "../constants";
+import { useParams, Link } from "react-router";
+import { getLanguageFlag } from "../components/FriendCard";
+import { capitalize } from "../lib/utils";
 
 const ProfilePage = () => {
+    const { id } = useParams();
     const { authUser } = useAuthUser();
     const queryClient = useQueryClient();
 
@@ -21,7 +25,7 @@ const ProfilePage = () => {
     });
 
     useEffect(() => {
-        if (authUser) {
+        if (authUser && !id) {
             setFormState({
                 fullName: authUser.fullName || "",
                 bio: authUser.bio || "",
@@ -32,7 +36,7 @@ const ProfilePage = () => {
                 gender: authUser.gender || "",
             });
         }
-    }, [authUser]);
+    }, [authUser, id]);
 
     const { mutate: updateProfileMutation, isPending } = useMutation({
         mutationFn: completeOnboarding, // Reusing the onboarding endpoint which is a generic update
@@ -64,6 +68,9 @@ const ProfilePage = () => {
         toast.success(`New ${gender} avatar generated!`);
     };
 
+    if (id && id !== authUser?._id) {
+        return <OtherUserProfile userId={id} />;
+    }
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
@@ -257,6 +264,118 @@ const ProfilePage = () => {
                             )}
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const OtherUserProfile = ({ userId }) => {
+    const { data: user, isLoading, error } = useQuery({
+        queryKey: ["userProfile", userId],
+        queryFn: () => getUserProfile(userId),
+    });
+
+    if (isLoading) return (
+        <div className="flex items-center justify-center min-h-[60vh]">
+            <span className="loading loading-spinner loading-lg text-primary" />
+        </div>
+    );
+
+    if (error || !user) return (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+            <div className="bg-error/10 p-4 rounded-full">
+                <UserIcon className="size-12 text-error" />
+            </div>
+            <h2 className="text-2xl font-bold">User Not Found</h2>
+            <p className="opacity-70">The profile you're looking for doesn't exist.</p>
+            <Link to="/" className="btn btn-primary">Go Home</Link>
+        </div>
+    );
+
+    return (
+        <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto animate-in fade-in duration-500">
+            <div className="card bg-base-200/50 backdrop-blur-xl border border-base-300 shadow-xl overflow-hidden">
+                {/* Profile Header Decoration */}
+                <div className="h-24 sm:h-32 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30" />
+
+                <div className="card-body p-4 sm:p-6 lg:p-10 -mt-12 sm:-mt-16 text-center sm:text-left">
+                    <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
+                        {/* Profile Pic */}
+                        <div className="avatar size-32 rounded-3xl bg-base-300 ring-4 ring-base-200 overflow-hidden shadow-2xl">
+                            {user.profilePic ? (
+                                <img src={user.profilePic} alt={user.fullName} className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="flex items-center justify-center h-full">
+                                    <UserIcon className="size-12 opacity-20" />
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="pt-4 flex-1">
+                            <h1 className="text-4xl font-black mb-1">{user.fullName}</h1>
+                            <p className="opacity-60 flex items-center justify-center sm:justify-start gap-1 font-medium text-lg">
+                                <MapPinIcon className="size-5" />
+                                {user.location || "World Traveler"}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Column 1: Info */}
+                        <div className="space-y-6 text-left">
+                            <section>
+                                <h3 className="text-xs font-bold opacity-50 uppercase tracking-[0.2em] mb-3">About</h3>
+                                <div className="bg-base-100/50 p-5 rounded-2xl border border-base-300 min-h-[120px] leading-relaxed italic text-lg shadow-inner">
+                                    "{user.bio || "No bio available yet. This user prefers to keep a bit of mystery!"}"
+                                </div>
+                            </section>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-base-100/50 p-4 rounded-2xl border border-base-300 shadow-sm">
+                                    <h3 className="text-[10px] font-bold opacity-50 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                        <GlobeIcon className="size-3" /> Native
+                                    </h3>
+                                    <div className="flex items-center gap-2 font-black text-lg">
+                                        {getLanguageFlag(user.nativeLanguage)}
+                                        {capitalize(user.nativeLanguage)}
+                                    </div>
+                                </div>
+                                <div className="bg-primary/5 p-4 rounded-2xl border border-primary/10 shadow-sm">
+                                    <h3 className="text-[10px] font-bold text-primary/70 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                        <BookOpenIcon className="size-3" /> Learning
+                                    </h3>
+                                    <div className="flex items-center gap-2 font-black text-lg text-primary">
+                                        {getLanguageFlag(user.learningLanguage)}
+                                        {capitalize(user.learningLanguage)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Column 2: Actions */}
+                        <div className="flex flex-col justify-center items-center gap-6 bg-gradient-to-br from-base-100/40 to-base-300/40 p-8 rounded-3xl border border-base-300 shadow-xl self-start md:sticky md:top-8">
+                            <div className="relative">
+                                <div className="absolute -inset-4 bg-primary/20 blur-2xl rounded-full" />
+                                <MessageSquareIcon className="size-12 text-primary relative" />
+                            </div>
+                            <div className="text-center space-y-2">
+                                <h2 className="text-2xl font-black">Say Hello!</h2>
+                                <p className="opacity-60 text-sm max-w-[200px]">Start a conversation with {user.fullName.split(" ")[0]} and practice together.</p>
+                            </div>
+                            <div className="flex flex-col w-full gap-3 mt-4">
+                                <Link to={`/chat/${user._id}`} className="btn btn-primary btn-lg shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                                    <MessageSquareIcon className="size-5 mr-2" />
+                                    Message
+                                </Link>
+                                <button className="btn btn-outline btn-lg opacity-50 cursor-not-allowed group relative">
+                                    <PhoneIcon className="size-5 mr-2" />
+                                    Video Call
+                                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-base-300 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Friends Only</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

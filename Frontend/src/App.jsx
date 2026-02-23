@@ -46,6 +46,7 @@ const App = () => {
         <Route path="/chat/:id" element={authUser ? <Layout showNavbar={false}><ChatPage /></Layout> : <Navigate to="/login" />} />
         <Route path="/friends" element={authUser ? <Layout showSidebar><FriendsPage /></Layout> : <Navigate to="/login" />} />
         <Route path="/profile" element={authUser ? <Layout showSidebar><ProfilePage /></Layout> : <Navigate to="/login" />} />
+        <Route path="/profile/:id" element={authUser ? <Layout showSidebar><ProfilePage /></Layout> : <Navigate to="/login" />} />
         <Route path="/onboarding" element={authUser ? (!authUser.isOnboarded ? <OnboardingPage /> : <Navigate to="/" />) : <Navigate to="/login" />} />
 
 
